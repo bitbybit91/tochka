@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/marketplace"
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/util"
+	"github.com/bitbybit91/tochka/modules/marketplace"
+	"github.com/bitbybit91/tochka/modules/util"
 )
 
 func manageRole(username, action, role string) {
@@ -77,4 +77,44 @@ Support Agent | Ticket Status | Number Of Tickets
 func importMetroStations() {
 	marketplace.ImportCityMetroStations(524901, "./dumps/moscow-metro.json")
 	marketplace.ImportCityMetroStations(498817, "./dumps/spb-metro.json")
+}
+
+func seedMockUsers() {
+	mockUsers := []string{
+		"Plugutopia",
+		"Hofmanncrew",
+		"Merckgrade",
+		"UAEDROPS",
+		"Norcalgreat",
+		"ozdope",
+		"Roaryohara",
+		"Chembros",
+		"Dankorignal",
+		"JohnAlite",
+		"Chadfontain",
+		"Grimbastard",
+		"Paladin",
+		"Potpacks",
+		"StrainPirate",
+		"BERGHAIN",
+		"Kushmountain",
+		"Stoopchild20",
+		"Bostongeorge",
+	}
+
+	defaultPassword := "password123"
+	
+	for _, username := range mockUsers {
+		user, err := marketplace.CreateUser(username, defaultPassword)
+		if err != nil {
+			fmt.Printf("Error creating user %s: %v\n", username, err)
+			continue
+		}
+		// Make them sellers
+		user.IsSeller = true
+		user.Save()
+		fmt.Printf("Created mock user: %s\n", username)
+	}
+	
+	fmt.Println("Mock users seeding completed")
 }

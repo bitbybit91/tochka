@@ -19,9 +19,9 @@ To get Tochka running:
 
 ```
 # 1. Get Tochka source code
-torsocks go get -insecure qxklmrhx7qkzais6.onion/Tochka/tochka-free-market
+torsocks go get -insecure github.com/bitbybit91/tochka
 # 2. Build Tochka from source
-cd $GOPATH/src/qxklmrhx7qkzais6.onion/Tochka/tochka-free-market
+cd $GOPATH/src/github.com/bitbybit91/tochka
 go build
 # 3. Sync DB models and supplementary data
 su postgres

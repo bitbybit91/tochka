@@ -21,6 +21,8 @@ func main() {
 		importMetroStations()
 	} else if argsWithoutProg[0] == "staff-stats" {
 		staffStats()
+	} else if argsWithoutProg[0] == "seed-mock-users" {
+		seedMockUsers()
 	} else {
 		fmt.Println("wrong command")
 	}

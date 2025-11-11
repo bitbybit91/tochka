@@ -6,7 +6,7 @@ import (
 
 	"github.com/alexedwards/scs"
 
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/settings"
+	"github.com/bitbybit91/tochka/modules/settings"
 )
 
 var (

@@ -12,8 +12,8 @@ import (
 	"github.com/dchest/captcha"
 	"github.com/gocraft/web"
 
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/apis"
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/util"
+	"github.com/bitbybit91/tochka/modules/apis"
+	"github.com/bitbybit91/tochka/modules/util"
 )
 
 func (c *Context) UserAvatar(w web.ResponseWriter, r *web.Request) {

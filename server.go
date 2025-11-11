@@ -8,8 +8,8 @@ import (
 	// "github.com/gorilla/csrf"
 	"github.com/jasonlvhit/gocron"
 
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/marketplace"
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/settings"
+	"github.com/bitbybit91/tochka/modules/marketplace"
+	"github.com/bitbybit91/tochka/modules/settings"
 )
 
 var (

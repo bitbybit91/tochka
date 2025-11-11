@@ -11,7 +11,7 @@ import (
 
 	"github.com/gocraft/web"
 
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/util"
+	"github.com/bitbybit91/tochka/modules/util"
 )
 
 func (c *Context) ListPackages(w web.ResponseWriter, r *web.Request) {
