@@ -20,6 +20,3 @@ Route::middleware('auth')->group(function () {
 // Vendors
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
 Route::get('/vendor/{username}', [VendorController::class, 'show'])->name('vendors.show');
-
-// Auth routes
-require __DIR__.'/auth.php';
