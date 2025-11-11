@@ -177,6 +177,240 @@ sudo systemctl status apache2
 
 ---
 
+## Service Unavailable (503) Error
+
+**Error**: "Service Unavailable - The server is temporarily unable to service your request"
+
+This error means Apache can't communicate with PHP-FPM or Laravel has an error.
+
+### Quick Diagnosis
+
+```bash
+# 1. Check Apache error logs
+sudo tail -50 /var/log/apache2/tochka-error.log
+
+# 2. Check Laravel logs
+tail -50 /var/www/tochka/tochka/storage/logs/laravel.log
+
+# 3. Check PHP-FPM status
+sudo systemctl status php8.3-fpm
+
+# 4. Check PHP-FPM logs
+sudo tail -50 /var/log/php8.3-fpm.log
+```
+
+### Common Causes & Solutions
+
+#### 1. PHP-FPM Not Running
+
+```bash
+# Start PHP-FPM
+sudo systemctl start php8.3-fpm
+
+# Enable on boot
+sudo systemctl enable php8.3-fpm
+
+# Verify it's running
+sudo systemctl status php8.3-fpm
+```
+
+#### 2. Wrong DocumentRoot Path
+
+```bash
+# Edit Apache config
+sudo nano /etc/apache2/sites-available/tochka.conf
+
+# Update DocumentRoot line to match your installation:
+DocumentRoot /var/www/tochka/tochka/public
+
+# Also update Directory paths:
+<Directory /var/www/tochka/tochka>
+<Directory /var/www/tochka/tochka/public>
+
+# Test configuration
+sudo apache2ctl configtest
+
+# Restart Apache
+sudo systemctl restart apache2
+```
+
+#### 3. Permission Issues
+
+```bash
+# Set correct ownership
+sudo chown -R www-data:www-data /var/www/tochka/tochka
+
+# Set correct permissions
+sudo chmod -R 755 /var/www/tochka/tochka
+sudo chmod -R 775 /var/www/tochka/tochka/storage
+sudo chmod -R 775 /var/www/tochka/tochka/bootstrap/cache
+
+# Verify
+ls -la /var/www/tochka/tochka/storage
+```
+
+#### 4. Missing .env File
+
+```bash
+# Check if .env exists
+ls -la /var/www/tochka/tochka/.env
+
+# If missing, create from example
+cd /var/www/tochka/tochka
+cp .env.example .env
+php artisan key:generate
+
+# Configure database in .env
+nano .env
+```
+
+#### 5. Laravel Application Error
+
+```bash
+# Enable debug mode temporarily (in .env)
+APP_DEBUG=true
+
+# Clear all caches
+cd /var/www/tochka/tochka
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+php artisan route:clear
+
+# Check Laravel logs
+tail -f storage/logs/laravel.log
+
+# Don't forget to disable debug in production
+APP_DEBUG=false
+```
+
+#### 6. PHP-FPM Socket Issues
+
+```bash
+# Check if socket exists
+ls -la /run/php/php8.3-fpm.sock
+
+# Verify PHP-FPM configuration
+sudo nano /etc/php/8.3/fpm/pool.d/www.conf
+
+# Ensure these settings:
+listen = /run/php/php8.3-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+
+# Restart PHP-FPM
+sudo systemctl restart php8.3-fpm
+```
+
+#### 7. Apache Modules Not Enabled
+
+```bash
+# Enable required modules
+sudo a2enmod rewrite
+sudo a2enmod headers
+sudo a2enmod proxy_fcgi
+sudo a2enmod setenvif
+
+# Enable PHP-FPM configuration
+sudo a2enconf php8.3-fpm
+
+# Restart Apache
+sudo systemctl restart apache2
+```
+
+#### 8. Tor Hidden Service (.onion) Specific
+
+If running on a Tor hidden service:
+
+```bash
+# Update Apache config for .onion domain
+sudo nano /etc/apache2/sites-available/tochka.conf
+
+# Add your .onion address:
+ServerName your-onion-address.onion
+ServerAlias www.your-onion-address.onion
+
+# Ensure Apache listens on 127.0.0.1:80 (for Tor)
+# In /etc/apache2/ports.conf:
+Listen 127.0.0.1:80
+
+# Update Tor configuration
+sudo nano /etc/tor/torrc
+
+# Add hidden service:
+HiddenServiceDir /var/lib/tor/tochka/
+HiddenServicePort 80 127.0.0.1:80
+
+# Restart services
+sudo systemctl restart tor
+sudo systemctl restart apache2
+
+# Get your .onion address
+sudo cat /var/lib/tor/tochka/hostname
+```
+
+### Complete Diagnostic Checklist
+
+```bash
+# 1. PHP-FPM Status
+sudo systemctl status php8.3-fpm
+# Should show: active (running)
+
+# 2. Apache Status
+sudo systemctl status apache2
+# Should show: active (running)
+
+# 3. Apache Configuration Test
+sudo apache2ctl configtest
+# Should show: Syntax OK
+
+# 4. Check DocumentRoot exists
+ls -la /var/www/tochka/tochka/public/index.php
+# Should exist
+
+# 5. Check permissions
+ls -ld /var/www/tochka/tochka/storage
+# Should show: drwxrwxr-x www-data www-data
+
+# 6. Test PHP-FPM socket
+sudo -u www-data test -r /run/php/php8.3-fpm.sock && echo "Socket OK" || echo "Socket Error"
+
+# 7. Check Laravel routes
+cd /var/www/tochka/tochka
+php artisan route:list
+# Should show 10 routes
+
+# 8. Test from command line
+curl -I http://localhost
+# Should return: HTTP/1.1 200 OK (not 503)
+```
+
+### If All Else Fails
+
+```bash
+# Full restart procedure
+sudo systemctl stop apache2
+sudo systemctl stop php8.3-fpm
+
+# Clear caches
+cd /var/www/tochka/tochka
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# Check configuration
+sudo apache2ctl configtest
+
+# Start services
+sudo systemctl start php8.3-fpm
+sudo systemctl start apache2
+
+# Monitor logs in real-time
+sudo tail -f /var/log/apache2/tochka-error.log
+```
+
+---
+
 ## Database Connection Errors
 
 **Error**: SQLSTATE connection errors
