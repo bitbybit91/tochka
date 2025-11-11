@@ -23,6 +23,8 @@ func main() {
 		staffStats()
 	} else if argsWithoutProg[0] == "seed-mock-users" {
 		seedMockUsers()
+	} else if argsWithoutProg[0] == "seed-mock-listings" {
+		seedMockListings()
 	} else {
 		fmt.Println("wrong command")
 	}

@@ -570,7 +570,7 @@ func (u User) GenerateAvatar() error {
 		return nil
 	}
 
-	err := govatar.GenerateFileFromUsername(govatar.MALE, u.Username, "data/images/"+u.Uuid+"_av.jpeg")
+	err := govatar.GenerateFileForUsername(govatar.MALE, u.Username, "data/images/"+u.Uuid+"_av.jpeg")
 	if err != nil {
 		return err
 	}
