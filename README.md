@@ -85,6 +85,10 @@ Comprehensive documentation available:
 php artisan migrate              # Run migrations
 php artisan db:seed             # Seed database
 
+# User management
+php artisan user:create-admin username password  # Create admin user
+php artisan user:make-admin username            # Grant admin to existing user
+
 # Cache management
 php artisan cache:clear         # Clear cache
 php artisan config:cache        # Cache configuration
@@ -94,6 +98,10 @@ php artisan optimize            # Optimize for production
 php artisan serve               # Dev server (port 8000)
 php artisan tinker              # Interactive shell
 ```
+
+**Default Admin Credentials** (after running `php artisan db:seed`):
+- Username: `admin`
+- Password: `admin123`
 
 ## 🗂️ Project Structure
 

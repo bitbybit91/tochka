@@ -209,6 +209,97 @@ php artisan cache:clear
 
 ---
 
+## Creating Admin Users
+
+**Issue**: No admin user exists after seeding, or need to create additional admin users.
+
+### Solution 1: Run Database Seeder
+
+The seeder now creates a default admin user:
+
+```bash
+php artisan db:seed
+```
+
+**Default Admin Credentials**:
+- Username: `admin`
+- Password: `admin123`
+
+### Solution 2: Create New Admin User
+
+Use the custom artisan command:
+
+```bash
+# Create a new admin user
+php artisan user:create-admin myusername mypassword
+
+# Example:
+php artisan user:create-admin admin admin123
+```
+
+### Solution 3: Grant Admin to Existing User
+
+Make an existing user an admin:
+
+```bash
+php artisan user:make-admin username
+
+# Example:
+php artisan user:make-admin Plugutopia
+```
+
+### Solution 4: Using Tinker
+
+Manually create or update a user:
+
+```bash
+php artisan tinker
+```
+
+Then run:
+
+```php
+// Create new admin user
+$user = App\Models\User::create([
+    'uuid' => (string) Str::uuid(),
+    'username' => 'admin',
+    'passphrase_hash' => Hash::make('admin123'),
+    'registration_date' => now(),
+    'invite_code' => (string) Str::uuid(),
+    'is_admin' => true,
+    'is_staff' => true,
+]);
+
+// Or update existing user
+$user = App\Models\User::where('username', 'someuser')->first();
+if ($user) {
+    $user->is_admin = true;
+    $user->is_staff = true;
+    $user->save();
+    echo "User updated to admin\n";
+} else {
+    echo "User not found\n";
+}
+```
+
+**Common Tinker Error**: `Attempt to assign property on null`
+
+This happens when the user doesn't exist. Always check if `$user` is not null:
+
+```php
+$user = App\Models\User::where('username', 'admin')->first();
+
+if ($user === null) {
+    echo "User 'admin' not found. Create it first.\n";
+} else {
+    $user->is_admin = true;
+    $user->save();
+    echo "Admin privileges granted.\n";
+}
+```
+
+---
+
 ## Quick Verification Checklist
 
 After installation, verify everything is working:

@@ -228,11 +228,39 @@ php artisan db:seed
 ### User Management
 
 ```bash
-# Create admin user (you'll need to create this command or use tinker)
+# Create a new admin user
+php artisan user:create-admin username password
+
+# Example:
+php artisan user:create-admin admin admin123
+
+# Grant admin privileges to existing user
+php artisan user:make-admin username
+
+# Example:
+php artisan user:make-admin Plugutopia
+```
+
+**Note**: The database seeder automatically creates a default admin user:
+- Username: `admin`
+- Password: `admin123`
+
+To create admin manually using tinker:
+```bash
 php artisan tinker
->>> $user = App\Models\User::where('username', 'admin')->first();
->>> $user->is_admin = true;
->>> $user->save();
+```
+
+```php
+// Create new admin
+$user = App\Models\User::create([
+    'uuid' => (string) Str::uuid(),
+    'username' => 'admin',
+    'passphrase_hash' => Hash::make('admin123'),
+    'registration_date' => now(),
+    'invite_code' => (string) Str::uuid(),
+    'is_admin' => true,
+    'is_staff' => true,
+]);
 ```
 
 ### Cache Management

@@ -18,6 +18,21 @@ class MarketplaceSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create admin user
+        $admin = User::firstOrCreate(
+            ['username' => 'admin'],
+            [
+                'uuid' => (string) Str::uuid(),
+                'passphrase_hash' => Hash::make('admin123'),
+                'registration_date' => now(),
+                'invite_code' => (string) Str::uuid(),
+                'is_admin' => true,
+                'is_staff' => true,
+                'is_seller' => false,
+            ]
+        );
+        $this->command->info('Created admin user: admin / admin123');
+
         // Create categories
         $categories = [
             ['id' => 1, 'name' => 'Cannabis', 'icon' => 'leaf'],
