@@ -1,7 +1,7 @@
 package bots
 
 import (
-	"github.com/mattermost/mattermost-server/model"
+	"github.com/mattermost/mattermost-server/v5/model"
 )
 
 type MattermostBot struct {

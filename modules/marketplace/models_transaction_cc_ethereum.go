@@ -1,7 +1,7 @@
 package marketplace
 
 import (
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/apis"
+	"github.com/bitbybit91/tochka/modules/apis"
 )
 
 type EthereumTransaction struct {

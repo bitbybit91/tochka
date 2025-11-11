@@ -15,8 +15,8 @@ import (
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/apis"
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/util"
+	"github.com/bitbybit91/tochka/modules/apis"
+	"github.com/bitbybit91/tochka/modules/util"
 )
 
 var (
@@ -570,7 +570,7 @@ func (u User) GenerateAvatar() error {
 		return nil
 	}
 
-	err := govatar.GenerateFileFromUsername(govatar.MALE, u.Username, "data/images/"+u.Uuid+"_av.jpeg")
+	err := govatar.GenerateFileForUsername(govatar.MALE, u.Username, "data/images/"+u.Uuid+"_av.jpeg")
 	if err != nil {
 		return err
 	}

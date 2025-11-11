@@ -5,7 +5,7 @@ import (
 
 	"github.com/gocraft/web"
 
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/util"
+	"github.com/bitbybit91/tochka/modules/util"
 )
 
 func (c *Context) CurrencyMiddleware(w web.ResponseWriter, r *web.Request, next web.NextMiddlewareFunc) {

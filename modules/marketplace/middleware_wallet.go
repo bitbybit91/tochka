@@ -2,7 +2,7 @@ package marketplace
 
 import (
 	"github.com/gocraft/web"
-	"qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/modules/apis"
+	"github.com/bitbybit91/tochka/modules/apis"
 )
 
 func (c *Context) BitcoinWalletMiddleware(w web.ResponseWriter, r *web.Request, next web.NextMiddlewareFunc) {
