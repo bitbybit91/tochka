@@ -397,6 +397,46 @@ rm -rf vendor
 composer install
 ```
 
+### NPM/Package.json Issues
+
+If you encounter `npm error enoent Could not read package.json`:
+
+```bash
+# Verify package.json exists
+ls -la package.json
+
+# If missing, ensure you have the latest code
+git status
+git pull origin main
+
+# Verify all npm config files are present
+ls -la package.json vite.config.js postcss.config.js tailwindcss.config.js
+
+# If files are present but npm still fails, try:
+npm cache clean --force
+npm install
+
+# Alternative: Use specific node version (18+)
+nvm use 18
+npm install
+```
+
+**Common causes**:
+- Incomplete git clone/pull
+- Missing files due to .gitignore issues
+- Old Node.js version (need 18+)
+- Corrupted npm cache
+
+**Solution**: Always ensure you pull the complete repository:
+```bash
+# Verify all Laravel files are present
+ls -la artisan composer.json package.json
+
+# If missing, re-clone or pull
+git fetch origin
+git reset --hard origin/copilot/update-codebase-to-laravel
+```
+
 ## Performance Optimization
 
 ### 1. Cache Configuration
